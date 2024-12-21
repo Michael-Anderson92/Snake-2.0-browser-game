@@ -1,0 +1,88 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+body {
+  display: flex;
+  background-color: lightgray;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system UI;
+  margin: 5px;
+  justify-content: space-around;
+  align-content: space-around;
+  align-items: center;
+}
+
+#main-container {
+  background-color: #9AB705;
+  margin-top: 60px;
+  position: relative;
+  display: flex;
+  border: 2px solid black;
+  width: 100vw;
+  height: 55vh;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.start-menu {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image: url("/images/menu-wallpaper.jpg");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#start-hidden {
+  display: flex;
+}
+
+#hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#game-title {
+  font-weight: 600;
+  font-size: 8em; 
+  color: #6b2606;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: black;
+  margin-top: 100px;
+  margin-left: 50px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
+  z-index: 1;
+  margin-bottom: 25px;
+  margin-left: 50px;
+}
+
+.menu-buttons {
+  display: flex;
+  position: relative;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system UI;
+  font-size: 2em;
+  font-weight: bold;
+  z-index: 1;
+  background-color: #6b2606;
+  color: #f7f7f7;
+  padding: 40px 40px;
+  border: 1px solid black;
+  margin: 10px;
+  border-radius: 20px;
+  border: 5px solid black;
+}

@@ -1,0 +1,75 @@
+.game-screen {
+  background-image: url("/images/grass-sidebars.jpg");
+  z-index: 2;
+  /* background-image: url("/images/pixel-border.png"); */
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#game-hidden {
+  display: none;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  gap: 1px;
+  width: 70%;
+  height: 100%;
+  z-index: 10;
+  border: 2px solid black;
+  background-color: #9AB705
+}
+
+.grid-item {
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 100%;
+}
+
+.snake {
+ background-color: black;
+ border: 2px solid red;
+}
+
+.game-buttons-container {
+  position: absolute;
+  display: flex;
+  top: 10px;
+  left: 0px;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.game-buttons {
+  display: flex;
+  position: relative;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system UI;
+  font-size: 1em;
+  font-weight: bold;
+  background-color: #6b2606;
+  color: #f7f7f7;
+  padding: 10px 10px;
+  border: 1px solid black;
+  border-width: .5px;
+  margin: 10px;
+  border-radius: 20px;
+  border: 5px solid black;
+}
+
+#new-game-button {
+  justify-content: center;
+}
+
+#home-button {
+  justify-content: center;
+}
+
+
+
+
