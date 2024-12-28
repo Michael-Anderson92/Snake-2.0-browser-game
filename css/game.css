@@ -1,7 +1,6 @@
 .game-screen {
   background-image: url("/images/grass-sidebars.jpg");
   z-index: 2;
-  /* background-image: url("/images/pixel-border.png"); */
   background-size: 100%;
   width: 100%;
   height: 100%;
@@ -23,7 +22,7 @@
   height: 100%;
   z-index: 10;
   border: 2px solid black;
-  background-color: #9AB705
+  background-color: #9AB705;
 }
 
 .grid-item {
@@ -33,8 +32,8 @@
 }
 
 .snake {
- background-color: black;
- border: 2px solid red;
+  background-color: black;
+  border: 2px solid red;
 }
 
 .game-buttons-container {
@@ -69,7 +68,3 @@
 #home-button {
   justify-content: center;
 }
-
-
-
-
