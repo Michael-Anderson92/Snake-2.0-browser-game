@@ -18,6 +18,8 @@ homeButton.addEventListener('click', function () {
 });
 
 const snakePosition = [];
+const snakeBody = [];
+const cherryPosition = [];
 const gridContainer = document.querySelector('.grid-container');
 const gridItems = [];
 const rows = 15;
@@ -74,17 +76,63 @@ function initializeSnake() {
   startMovement();
 }
 
+function initializeCherry() {
+  const startPosition = getRandomPosition();
+  cherryPosition.length = 0;
+  cherryPosition.push(startPosition.index);
+  updateCherryPosition(cherryPosition);
+}
+
 function startMovement() {
   if (movementInterval) clearInterval(movementInterval);
-
-  movementInterval = setInterval(() => moveSnake(currentDirection), 500);
+  movementInterval = setInterval(() => moveSnake(currentDirection), 250);
 }
 
 // Function to update the grid display to show the snake
 function updateSnakePosition(snakePosition) {
   gridItems.forEach(item => item.classList.remove('snake'));
   snakePosition.forEach(index => gridItems[index].classList.add('snake'));
+  console.log(`Snake Position is at ${snakePosition}`);
+  eatCherry();
 }
+
+function updateCherryPosition(cherryPosition) {
+  gridItems.forEach(item => item.classList.remove('cherry'));
+  cherryPosition.forEach(index => gridItems[index].classList.add('cherry'));
+  console.log(`Chery Position is at ${cherryPosition}`)
+}
+
+function eatCherry() { 
+  const snakeEl = document.querySelector('.grid-item.snake'); 
+  const cherryEl = document.querySelector('.grid-item.cherry'); 
+  if (!snakeEl || !cherryEl) { 
+    console.error('Snake or Cherry element not found'); 
+    return; 
+  } 
+  
+  const snakeIndex = snakeEl.getAttribute('data-index'); 
+  const cherryIndex = cherryEl.getAttribute('data-index'); 
+  
+  if (snakeIndex === cherryIndex) { 
+    console.log('The snake and cherry are in the same position');
+    let snakeBody;
+    switch (currentDirection) {
+      case 'up':
+        snakeBody = snakePosition.push(snakePosition[0] - cols); 
+        console.log(snakeBody);
+      case 'down':
+        snakeBody = snakePosition.push(snakePosition[0] + cols); 
+        console.log(snakeBody);
+      case 'left':
+        snakeBody = snakePosition.push(snakePosition[0] - 1); 
+        console.log(snakeBody);
+      case 'right':
+        snakeBody = snakePosition.push(snakePosition[0] + 1); 
+        console.log(snakeBody);
+        
+    }
+   }
+   } // Add additional logic here, like removing the cherry or updating the score. } }
 
 // Function to move the snake
 function moveSnake(direction) {
@@ -161,4 +209,5 @@ startButton.addEventListener('click', function () {
   gameScreen.style.display = 'flex';
 
   initializeSnake();
+  initializeCherry();
 });
