@@ -45,6 +45,7 @@ document.getElementById('start-button').addEventListener('click', function () {
 const startButton = document.querySelector('#start-button');
 const newGameButton = document.querySelector('#new-game-button');
 const leaderboardButton = document.querySelector('#leaderboard-button');
+const scoreboardSection = document.querySelector('#scoreboard-section')
 const homeButton = document.querySelector('#home-button');
 
 homeButton.addEventListener('click', function () {
@@ -76,6 +77,8 @@ for (let row = 0; row < rows; row++) {
     gridItems.push(gridItem);
   }
 }
+
+
 
 // Function to generate a random starting position
 function getRandomPosition() {
@@ -242,6 +245,7 @@ function eatCherry() {
     // Change snake color
     const newColor = getRandomColor();
     changeSnakeColor(newColor);
+    scoreboardSection.innerText = `Score: ${score}\nCherries: ${cherryCount}`;
   }
   }
 

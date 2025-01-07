@@ -1,7 +1,7 @@
 .game-screen {
   background-image: url("/images/blue-concrete-background.jpg");
   z-index: 2;
-  background-size: 100%;
+  background-size: cover;
   width: 100%;
   height: 100%;
   display: flex;
@@ -15,16 +15,18 @@
 
 #game-over-message {
   position: fixed;
-  top: 25%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  color: rgb(236, 4, 4);
-  padding: 20px;
+  background-color: #FCF7F8;
+  color: #A31621;
+  padding: 1.5vh;
   border-radius: 10px;
-  font-size: 24px;
+  font-size: 2vh;
   text-align: center;
   z-index: 1000;
+  border: 2px solid #A31621;
+  font-weight: bold;
 }
 
 .hidden {
@@ -42,11 +44,12 @@
   transform: translate(-25%, -25%);
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 20px;
+  padding: 2vh;
   border-radius: 10px;
-  font-size: 24px;
+  font-size: 2vh;
   text-align: center;
   z-index: 1000;
+  
 }
 
 .hidden {
@@ -62,11 +65,12 @@
   display: grid;
   grid-template-columns: repeat(20, 1fr);
   grid-template-rows: repeat(10, 1fr);
+  position: absolute;
   gap: 1px;
-  width: 70%;
-  height: 100%;
+  width: 90vh;
+  height: 47vh;
   z-index: 10;
-  border: 2px solid black;
+  border: 5px solid rgb(246, 0, 0);
   background-color: #000000;
 }
 
@@ -75,7 +79,7 @@
   width: 100%;
   height: 100%;
   border-color: rgb(0, 255, 0);
-  border-style:ridge
+  border-style: ridge;
 }
 
 .snake {
@@ -94,9 +98,12 @@
 .game-buttons-container {
   position: absolute;
   display: flex;
-  top: 10px;
-  left: 0px;
-  flex-direction: column;
+  bottom: 1vh;
+  left: 0;
+  right: 0;
+  margin: auto;
+  justify-content: center;
+  flex-direction: row;
   z-index: 100;
 }
 
@@ -104,16 +111,18 @@
   display: flex;
   position: relative;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, system UI;
-  font-size: 1.5em;
+  font-size: 2vh;
+  font-display: center;
   font-weight: bold;
   background-color: #15cc2e;
-  color: #000000;
-  padding: 25px 25px;
-  border: 1px solid black;
-  border-width: .5px;
-  margin: 10px;
+  color: #121619;
+  padding: 2vh 1.8vh;
+  border: 1px solid #121619;
+  border-width: 0.5px;
+  margin: 1vh;
   border-radius: 20px;
-  border: 5px solid rgb(0, 0, 0);
+  border: 5px solid #121619;
+  width: 20vh;
 }
 
 #new-game-button {
@@ -122,4 +131,30 @@
 
 #home-button {
   justify-content: center;
+}
+
+.scoreboard-container {
+  position: absolute;
+  display: flex;
+  top: .1vh;
+  right: .1vh;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.scoreboard-buttons {
+  display: flex;
+  position: relative;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system UI;
+  font-size: 2vh;
+  font-display: center;
+  font-weight: bold;
+  background-color: #15cc2e;
+  color: #121619;
+  padding: 2vh 2vh;
+  border-width: 0.5px;
+  margin: 1vh;
+  border-radius: 20px;
+  border: 5px solid #121619;
+  width: 20vh;
 }
