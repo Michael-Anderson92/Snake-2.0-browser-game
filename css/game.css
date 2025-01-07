@@ -15,11 +15,11 @@
 
 #game-over-message {
   position: fixed;
-  top: 50%;
+  top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: rgb(236, 4, 4);
   padding: 20px;
   border-radius: 10px;
   font-size: 24px;
@@ -84,9 +84,11 @@
 }
 
 .cherry {
-  background-image: url("/images/battery-sprite.png");
-  background-size:auto;
-  border: 2px solid black;
+  background-image: url("/images/cherry-gif.gif");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid #15cc2e;
 }
 
 .game-buttons-container {

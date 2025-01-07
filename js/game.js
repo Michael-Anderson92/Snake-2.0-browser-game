@@ -63,6 +63,7 @@ const gridItems = [];
 const rows = 10;
 const cols = 20;
 let score = 0;
+let cherryCount = 0;
 
 // Function to iterate through grid container matrix,
 // create elements for each cell, and append them to 'grid-item'
@@ -128,8 +129,54 @@ function initializeCherry() {
 
 function startMovement() {
   if (movementInterval) clearInterval(movementInterval);
-  movementInterval = setInterval(() => moveSnake(currentDirection), 150);
+
+  let interval = 250; // Default interval
+
+  if (cherryCount >= 100) {
+    interval = 10;
+  } else if (cherryCount >= 95) {
+    interval = 20;
+  } else if (cherryCount >= 90) {
+    interval = 30;
+  } else if (cherryCount >= 85) {
+    interval = 40;
+  } else if (cherryCount >= 80) {
+    interval = 50;
+  } else if (cherryCount >= 75) {
+    interval = 60;
+  } else if (cherryCount >= 70) {
+    interval = 70;
+  } else if (cherryCount >= 65) {
+    interval = 80;
+  } else if (cherryCount >= 60) {
+    interval = 90;
+  } else if (cherryCount >= 55) {
+    interval = 100;
+  } else if (cherryCount >= 50) {
+    interval = 110;
+  } else if (cherryCount >= 45) {
+    interval = 120;
+  } else if (cherryCount >= 40) {
+    interval = 130;
+  } else if (cherryCount >= 35) {
+    interval = 140;
+  } else if (cherryCount >= 30) {
+    interval = 150;
+  } else if (cherryCount >= 25) {
+    interval = 175;
+  } else if (cherryCount >= 20) {
+    interval = 200;
+  } else if (cherryCount >= 15) {
+    interval = 225;
+  } else if (cherryCount >= 10) {
+    interval = 250;
+  } else if (cherryCount >= 5) {
+    interval = 275;
+  }
+  movementInterval = setInterval(() => moveSnake(currentDirection), interval);
 }
+
+
 
 function endMovement() {
   if (movementInterval) clearInterval(movementInterval);
@@ -182,9 +229,11 @@ function eatCherry() {
 
     // Play cherry sound effect
     cherrySoundEffect();
+    cherryCount++; 
+    console.log(`The cherry count is ${cherryCount}`)
 
     // Increase score when the snake eats a cherry
-    score++;
+    score += 50;
     console.log(`Score: ${score}`);
 
     // Generate a new cherry position
@@ -194,7 +243,8 @@ function eatCherry() {
     const newColor = getRandomColor();
     changeSnakeColor(newColor);
   }
-}
+  }
+
 
 let currentSnakeColor = 'green';
 
@@ -227,17 +277,33 @@ function moveSnake(direction) {
       break;
     case 'left':
       newPosition = snakePosition[0] - 1;
+      // Check for left wall collision
+      if (snakePosition[0] % cols === 0) {
+        console.log('Hit the left wall!');
+        clearInterval(movementInterval);
+        showGameOverMessage(`Game Over! Your score is ${score}`);
+        endMovement();
+        return;
+      }
       break;
     case 'right':
       newPosition = snakePosition[0] + 1;
+      // Check for right wall collision
+      if (snakePosition[0] % cols === cols - 1) {
+        console.log('Hit the right wall!');
+        clearInterval(movementInterval);
+        showGameOverMessage(`Game Over! Your score is ${score}`);
+        endMovement();
+        return;
+      }
       break;
   }
 
-  // Check for wall collision
+  // Check for top and bottom wall collision
   if (newPosition < 0 || newPosition >= rows * cols) {
-    console.log('Hit a wall!');
+    console.log('Hit the top or bottom wall!');
     clearInterval(movementInterval);
-    showGameOverMessage('Game Over! You hit a wall.');
+    showGameOverMessage(`Game Over! Your score is ${score}`);
     endMovement();
     return;
   }
@@ -246,7 +312,8 @@ function moveSnake(direction) {
   if (snakePosition.includes(newPosition)) {
     console.log('You ran into yourself!');
     clearInterval(movementInterval);
-    showGameOverMessage('Game Over! You ran into yourself!');
+    showGameOverMessage(`Game Over! Your score is ${score}`);
+    endMovement();
     return;
   }
 
@@ -256,10 +323,13 @@ function moveSnake(direction) {
   updateSnakePosition(snakePosition);
 }
 
+
 // Function to reset the game when game over
 function resetGame() {
   score = 0;
+  cherryCount = 0;
   snakePosition.length = 0;
+  hideGameOverMessage();
   initializeSnake();
   initializeCherry();
 }
@@ -271,33 +341,51 @@ function handleKeyDown(event) {
     case 'ArrowUp':
     case 'w':
     case 'W':
+      if (currentDirection === 'down') {
+        newDirection = null
+      } else {
       newDirection = 'up';
+      }
       break;
     case 'ArrowDown':
     case 's':
     case 'S':
+      if (currentDirection === 'up') {
+        newDirection = null
+      } else {
       newDirection = 'down';
+      }
       break;
     case 'ArrowLeft':
     case 'a':
     case 'A':
+      if (currentDirection === 'right') {
+        newDirection = null
+      } else {
       newDirection = 'left';
+      }
       break;
     case 'ArrowRight':
     case 'd':
     case 'D':
+      if (currentDirection === 'left') {
+        newDirection = null
+      } else {
       newDirection = 'right';
+      }
       break;
     default:
       console.log('Unhandled key: ' + event.key);
       return;
   }
 
-  if (newDirection !== currentDirection) {
+  if (newDirection !== null && newDirection !== currentDirection) {
     currentDirection = newDirection;
-    startMovement(); // Restart movement in the new direction
+    startMovement();
   }
 }
+
+
 
 // Event listener for key down events
 document.addEventListener('keydown', handleKeyDown);
@@ -323,10 +411,7 @@ newGameButton.addEventListener('click', function() {
   gameScreen.style.display = 'flex';
   document.addEventListener('keydown', handleKeyDown);
 
-  hideGameOverMessage();
-  hideScoreboard();
-  initializeSnake();
-  initializeCherry();
+  resetGame();
 });
 
 
