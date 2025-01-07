@@ -1,5 +1,5 @@
 .game-screen {
-  background-image: url("/images/grass-sidebars.jpg");
+  background-image: url("/images/blue-concrete-background.jpg");
   z-index: 2;
   background-size: 100%;
   width: 100%;
@@ -13,31 +13,79 @@
   display: none;
 }
 
+#game-over-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 24px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+#scoreboard-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-25%, -25%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 24px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none
+}
+
+.visible {
+  display: block;
+}
+
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(15, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   gap: 1px;
   width: 70%;
   height: 100%;
   z-index: 10;
   border: 2px solid black;
-  background-color: #9AB705;
+  background-color: #000000;
 }
 
 .grid-item {
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   width: 100%;
   height: 100%;
+  border-color: rgb(0, 255, 0);
+  border-style:ridge
 }
 
 .snake {
-  background-color: black;
-  border: 2px solid red;
+  background-color: rgb(20, 172, 48, 1);
+  border: 2px solid rgb(0, 0, 0);
 }
 
 .cherry {
-  background-color: red;
+  background-image: url("/images/battery-sprite.png");
+  background-size:auto;
   border: 2px solid black;
 }
 
@@ -54,16 +102,16 @@
   display: flex;
   position: relative;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, system UI;
-  font-size: 1em;
+  font-size: 1.5em;
   font-weight: bold;
-  background-color: #6b2606;
-  color: #f7f7f7;
-  padding: 10px 10px;
+  background-color: #15cc2e;
+  color: #000000;
+  padding: 25px 25px;
   border: 1px solid black;
   border-width: .5px;
   margin: 10px;
   border-radius: 20px;
-  border: 5px solid black;
+  border: 5px solid rgb(0, 0, 0);
 }
 
 #new-game-button {

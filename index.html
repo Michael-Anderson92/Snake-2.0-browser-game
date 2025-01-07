@@ -10,6 +10,8 @@
   <script defer src="js/game.js"></script>
 </head>
 <body>
+  <audio id="start-music" muted loop></audio>
+  <audio id="game-music" muted loop></audio>
   <div id="main-container">
     <div class="start-menu" id="start-menu">
       <div id="hero-content">
@@ -25,6 +27,8 @@
   
     <div class="game-screen" id="game-screen">
       <div class="game-buttons-container">
+        <div id="game-over-message" class="hidden">Game Over!</div>
+        <div id="scoreboard-message" class="hidden">Score:</div>
         <button class="game-buttons" id="new-game-button">New Game</button>
         <button class="game-buttons" id="home-button">Return Home</button>
       </div>
