@@ -23,14 +23,12 @@ function getRandomGameTrack() {
   const randomIndex = Math.floor(Math.random() * gameTracks.length);
   return gameTracks[randomIndex];
 }
-
 function playRandomGameTrack() {
   const track = getRandomGameTrack();
   gameMusic.src = track;
   gameMusic.muted = false;
   gameMusic.play();
 }
-
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
@@ -44,9 +42,11 @@ document.getElementById('start-button').addEventListener('click', function () {
 // Define Constants here
 const startButton = document.querySelector('#start-button');
 const newGameButton = document.querySelector('#new-game-button');
-const leaderboardButton = document.querySelector('#leaderboard-button');
-const scoreboardSection = document.querySelector('#scoreboard-section')
+const leaderboardMenu = document.getElementById('leaderboard-menu');
+const leaderboardButton = document.getElementById('leaderboard-button');
+const scoreboardSection = document.querySelector('#scoreboard-section');
 const homeButton = document.querySelector('#home-button');
+
 
 homeButton.addEventListener('click', function () {
   console.log('You clicked home');
@@ -65,6 +65,7 @@ const rows = 10;
 const cols = 20;
 let score = 0;
 let cherryCount = 0;
+let highScores = [0,0,0,0,0];
 
 // Function to iterate through grid container matrix,
 // create elements for each cell, and append them to 'grid-item'
@@ -78,7 +79,43 @@ for (let row = 0; row < rows; row++) {
   }
 }
 
+// Add Event Listeners
+// Event listener for key down events
+document.addEventListener('keydown', handleKeyDown);
 
+// Event listener for start button
+startButton.addEventListener('click', function () {
+  console.log('You clicked start');
+  const startMenu = document.getElementById('start-menu');
+  startMenu.style.display = 'none';
+  const gameScreen = document.getElementById('game-screen');
+  gameScreen.style.display = 'flex';
+  document.addEventListener('keydown', handleKeyDown);
+
+  resetGame();
+});
+
+// Event Listener for new game button
+newGameButton.addEventListener('click', function() {
+  console.log('You clicked new game');
+  const startMenu = document.getElementById('start-menu');
+  startMenu.style.display = 'none';
+  const gameScreen = document.getElementById('game-screen');
+  gameScreen.style.display = 'flex';
+  document.addEventListener('keydown', handleKeyDown);
+
+  resetGame();
+});
+
+// Event listener for leaderboard button
+leaderboardButton.addEventListener('click', function() {
+  console.log('You clicked the leaderboard');
+  if (leaderboardMenu.style.display === 'none' || leaderboardMenu.style.display === '') {
+  leaderboardMenu.style.display = 'flex' }
+  else {
+    leaderboardMenu.style.display ='none'
+  }
+})
 
 // Function to generate a random starting position
 function getRandomPosition() {
@@ -87,6 +124,11 @@ function getRandomPosition() {
   return { row, col, index: row * cols + col };
 }
 
+function endGame() {
+  console.log(score);
+  highScores.push(score);
+  console.log(highScores);
+}
 // Function to determine the initial movement direction based on the quadrant
 function getInitialDirection(position) {
   const { row, col } = position;
@@ -118,7 +160,6 @@ function initializeSnake() {
 
   startMovement();
 }
-
 function initializeCherry() {
   let startPosition;
   do {
@@ -133,7 +174,7 @@ function initializeCherry() {
 function startMovement() {
   if (movementInterval) clearInterval(movementInterval);
 
-  let interval = 250; // Default interval
+  let interval = 250; 
 
   if (cherryCount >= 100) {
     interval = 10;
@@ -178,7 +219,6 @@ function startMovement() {
   }
   movementInterval = setInterval(() => moveSnake(currentDirection), interval);
 }
-
 
 
 function endMovement() {
@@ -249,8 +289,7 @@ function eatCherry() {
   }
   }
 
-
-let currentSnakeColor = 'green';
+let currentSnakeColor = 'lawngreen';
 
 function changeSnakeColor(color) {
   currentSnakeColor = color;
@@ -309,8 +348,22 @@ function moveSnake(direction) {
     clearInterval(movementInterval);
     showGameOverMessage(`Game Over! Your score is ${score}`);
     endMovement();
+    endGame();
+    
+  
+
+  
+    // Clear and reinitialize cherry position
+    cherryPosition.forEach(index => {
+      const item = gridItems[index];
+      item.classList.remove('cherry');
+      item.style.backgroundColor = '';
+    });
+  
     return;
   }
+  
+  
 
   // Check for self-collision
   if (snakePosition.includes(newPosition)) {
@@ -336,6 +389,9 @@ function resetGame() {
   hideGameOverMessage();
   initializeSnake();
   initializeCherry();
+  currentSnakeColor = 'black';
+  currentSnakeColor = 'lawngreen';
+  scoreboardSection.innerText = `Score: 0\nCherries: 0`;
 }
 
 // Function to handle key down events for changing direction
@@ -390,60 +446,16 @@ function handleKeyDown(event) {
 }
 
 
-
-// Event listener for key down events
-document.addEventListener('keydown', handleKeyDown);
-
-// Event listener for start button
-startButton.addEventListener('click', function () {
-  console.log('You clicked start');
-  const startMenu = document.getElementById('start-menu');
-  startMenu.style.display = 'none';
-  const gameScreen = document.getElementById('game-screen');
-  gameScreen.style.display = 'flex';
-  document.addEventListener('keydown', handleKeyDown);
-
-  initializeSnake();
-  initializeCherry();
-});
-
-newGameButton.addEventListener('click', function() {
-  console.log('You clicked new game');
-  const startMenu = document.getElementById('start-menu');
-  startMenu.style.display = 'none';
-  const gameScreen = document.getElementById('game-screen');
-  gameScreen.style.display = 'flex';
-  document.addEventListener('keydown', handleKeyDown);
-
-  resetGame();
-});
-
-
 function showGameOverMessage(message) {
   const gameOverMessage = document.getElementById('game-over-message');
   gameOverMessage.textContent = message;
   gameOverMessage.classList.remove('hidden');
   gameOverMessage.classList.add('visible');
 }
-
-// function showScoreboard(message) {
-//   const scoreboardMessage = document.getElementById('scoreboard-message');
-//   scoreboardMessage.textContent = message;
-//   scoreboardMessage.classList.remove('hidden');
-//   scoreboardMessage.classList.add('visible');
-// }
-
 function hideGameOverMessage(message) {
   const gameOverMessage = document.getElementById('game-over-message');
   gameOverMessage.textContent = message;
   gameOverMessage.classList.add('hidden');
   gameOverMessage.classList.remove('visible');
 }
-
-// function hideScoreboard(message) {
-//   const scoreboardMessage = document.getElementById('scoreboard-message');
-//   scoreboardMessage.textContent = message;
-//   scoreboardMessage.classList.add('hidden');
-//   scoreboardMessage.classList.remove('visible');
-// }
 
