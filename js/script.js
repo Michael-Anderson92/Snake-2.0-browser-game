@@ -29,6 +29,8 @@ function playRandomGameTrack() {
   gameMusic.muted = false;
   gameMusic.play();
 }
+
+// Random color generator for snake
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
@@ -39,24 +41,14 @@ document.getElementById('start-button').addEventListener('click', function () {
   playRandomGameTrack();
 });
 
-// Define Constants here
+// Define Constants
 const startButton = document.querySelector('#start-button');
 const newGameButton = document.querySelector('#new-game-button');
 const leaderboardMenu = document.getElementById('leaderboard-menu');
 const leaderboardButton = document.getElementById('leaderboard-button');
+const topScoresEl = document.getElementById('top-scores')
 const scoreboardSection = document.querySelector('#scoreboard-section');
 const homeButton = document.querySelector('#home-button');
-
-
-homeButton.addEventListener('click', function () {
-  console.log('You clicked home');
-  const startMenu = document.getElementById('start-menu');
-  startMenu.style.display = 'flex';
-  const gameScreen = document.getElementById('game-screen');
-  gameScreen.style.display = 'none';
-  endMovement();
-});
-
 const snakePosition = [];
 const cherryPosition = [];
 const gridContainer = document.querySelector('.grid-container');
@@ -64,8 +56,17 @@ const gridItems = [];
 const rows = 10;
 const cols = 20;
 let score = 0;
+let finalScore = 0
 let cherryCount = 0;
 let highScores = [0,0,0,0,0];
+
+homeButton.addEventListener('click', function () {
+  const startMenu = document.getElementById('start-menu');
+  startMenu.style.display = 'flex';
+  const gameScreen = document.getElementById('game-screen');
+  gameScreen.style.display = 'none';
+  endMovement();
+});
 
 // Function to iterate through grid container matrix,
 // create elements for each cell, and append them to 'grid-item'
@@ -79,13 +80,11 @@ for (let row = 0; row < rows; row++) {
   }
 }
 
-// Add Event Listeners
 // Event listener for key down events
 document.addEventListener('keydown', handleKeyDown);
 
 // Event listener for start button
 startButton.addEventListener('click', function () {
-  console.log('You clicked start');
   const startMenu = document.getElementById('start-menu');
   startMenu.style.display = 'none';
   const gameScreen = document.getElementById('game-screen');
@@ -97,7 +96,6 @@ startButton.addEventListener('click', function () {
 
 // Event Listener for new game button
 newGameButton.addEventListener('click', function() {
-  console.log('You clicked new game');
   const startMenu = document.getElementById('start-menu');
   startMenu.style.display = 'none';
   const gameScreen = document.getElementById('game-screen');
@@ -109,7 +107,6 @@ newGameButton.addEventListener('click', function() {
 
 // Event listener for leaderboard button
 leaderboardButton.addEventListener('click', function() {
-  console.log('You clicked the leaderboard');
   if (leaderboardMenu.style.display === 'none' || leaderboardMenu.style.display === '') {
   leaderboardMenu.style.display = 'flex' }
   else {
@@ -124,10 +121,14 @@ function getRandomPosition() {
   return { row, col, index: row * cols + col };
 }
 
-function endGame() {
-  console.log(score);
+function adjustLeaderboard() {
   highScores.push(score);
+  highScores.sort((a, b) => b - a);
+  if (highScores.length > 5) {
+  highScores.splice(5, 1);
+  }
   console.log(highScores);
+  topScoresEl.innerHTML = `1. ${highScores[0]}<br>2. ${highScores[1]}<br>3. ${highScores[2]}<br>4. ${highScores[3]}<br>5. ${highScores[4]}<br>`
 }
 // Function to determine the initial movement direction based on the quadrant
 function getInitialDirection(position) {
@@ -156,7 +157,6 @@ function initializeSnake() {
 
   // Get initial direction based on starting position
   currentDirection = getInitialDirection(startPosition);
-  console.log(`Initial direction: ${currentDirection}`);
 
   startMovement();
 }
@@ -250,7 +250,6 @@ function updateCherryPosition(cherryPosition) {
 
 function eatCherry() {
   if (snakePosition[0] === cherryPosition[0]) {
-    console.log('The snake and cherry are in the same position');
 
     // Grow the snake by adding a new segment
     let newSegment;
@@ -273,11 +272,9 @@ function eatCherry() {
     // Play cherry sound effect
     cherrySoundEffect();
     cherryCount++; 
-    console.log(`The cherry count is ${cherryCount}`)
 
     // Increase score when the snake eats a cherry
     score += 50;
-    console.log(`Score: ${score}`);
 
     // Generate a new cherry position
     initializeCherry();
@@ -308,6 +305,19 @@ const soundEffects = {
 function cherrySoundEffect() { 
   soundEffects.cherry.play(); }
 
+
+function handleGameOver() { 
+    let finalScore = score;
+    for (let i = 0; i < highScores.length; i++) { 
+      if (finalScore > highScores[i]) { 
+        showGameOverMessage('Congratulations! High score! Enter initials here.'); 
+        return; 
+      } 
+    }
+    showGameOverMessage(`Game Over! Your score is ${score}`);
+    endMovement(); 
+  }
+
 // Function to move the snake
 function moveSnake(direction) {
   let newPosition;
@@ -322,7 +332,6 @@ function moveSnake(direction) {
       newPosition = snakePosition[0] - 1;
       // Check for left wall collision
       if (snakePosition[0] % cols === 0) {
-        console.log('Hit the left wall!');
         clearInterval(movementInterval);
         showGameOverMessage(`Game Over! Your score is ${score}`);
         endMovement();
@@ -333,26 +342,21 @@ function moveSnake(direction) {
       newPosition = snakePosition[0] + 1;
       // Check for right wall collision
       if (snakePosition[0] % cols === cols - 1) {
-        console.log('Hit the right wall!');
         clearInterval(movementInterval);
         showGameOverMessage(`Game Over! Your score is ${score}`);
-        endMovement();
+        handleGameOver();
         return;
       }
       break;
   }
+  
 
   // Check for top and bottom wall collision
   if (newPosition < 0 || newPosition >= rows * cols) {
-    console.log('Hit the top or bottom wall!');
     clearInterval(movementInterval);
-    showGameOverMessage(`Game Over! Your score is ${score}`);
-    endMovement();
-    endGame();
+    handleGameOver(); 
+    adjustLeaderboard();
     
-  
-
-  
     // Clear and reinitialize cherry position
     cherryPosition.forEach(index => {
       const item = gridItems[index];
@@ -363,14 +367,11 @@ function moveSnake(direction) {
     return;
   }
   
-  
-
   // Check for self-collision
   if (snakePosition.includes(newPosition)) {
-    console.log('You ran into yourself!');
     clearInterval(movementInterval);
     showGameOverMessage(`Game Over! Your score is ${score}`);
-    endMovement();
+    handleGameOver();
     return;
   }
 

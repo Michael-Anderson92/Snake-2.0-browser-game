@@ -62,8 +62,8 @@ body {
 }
 
 #leaderboard-title, #top-scores {
-  flex-grow: 1;  /* Make both elements grow to fill the parent div */
-  width: 100%;  /* Ensure they take the full width */
+  flex-grow: 1;  
+  width: 100%; 
 }
 
 #leaderboard-title {
