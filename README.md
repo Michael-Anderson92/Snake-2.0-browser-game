@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.invalidlink.com">CLICK TO PLAY</a>
+  <a href="https://michael-anderson92.github.io/Snake-2.0-browser-game/">CLICK TO PLAY</a>
 </p>
 
 <div align="center">
