@@ -109,10 +109,10 @@ newGameButton.addEventListener('click', function() {
   const gameScreen = document.getElementById('game-screen');
   gameScreen.style.display = 'flex';
   document.addEventListener('keydown', handleKeyDown);
-  if (gameScreen.style.backgroundImage === 'url("../images/purple-vibrant-fog.jpg")') {
-    gameScreen.style.backgroundImage = 'url("../images/blue-vibrant-fog.jpg")'
+  if (gameScreen.style.backgroundImage === "../images/purple-vibrant-fog.jpg") {
+    gameScreen.style.backgroundImage = "../images/blue-vibrant-fog.jpg"
   } else {
-    gameScreen.style.backgroundImage = 'url("../images/purple-vibrant-fog.jpg")'
+    gameScreen.style.backgroundImage = "../images/purple-vibrant-fog.jpg"
   }
   playRandomGameTrack();
   resetGame();
