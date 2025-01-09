@@ -337,14 +337,14 @@ function cherrySoundEffect() {
   for (let i = 0; i < highScores.length; i++) {
     if (finalScore > highScores[i].score) {
       isHighScore = true;
-      showGameOverMessage('High score! Enter initials:', true);
+      showGameOverMessage('High score!', true);
       return;
     }
   }
 
   if (!isHighScore && highScores.length < 5) {
     isHighScore = true;
-    showGameOverMessage('High score! Enter initials:', true);
+    showGameOverMessage('High score!', true);
     return;
   }
 
