@@ -17,7 +17,7 @@ body {
 }
 
 #main-container {
-  background-image: url("/images/robotic-snake.jpg");
+  background-image: url("../images/robotic-snake.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
