@@ -1,5 +1,5 @@
 .game-screen {
-  background-image: url("/images/blue-concrete-background.jpg");
+  background-image: url("../images/blue-concrete-background.jpg");
   z-index: 2;
   background-size: cover;
   width: 100%;
@@ -88,7 +88,7 @@
 }
 
 .cherry {
-  background-image: url("/images/cherry-gif.gif");
+  background-image: url("../images/cherry-gif.gif");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
