@@ -9,9 +9,7 @@ const gameTracks = [
   "media/04 - Overworld Day.mp3",
   "media/11 - Mushrooms.mp3",
   "media/15 - Underground Snow.mp3",
-  "media/24 - Jungle.mp3",
   "media/30 - Dungeon.mp3",
-  "media/31 - Underworld.mp3"
 ];
 
 const colors = ['lightgreen', 'purple', 'blue', 'pink', 'white', 'gold', 'yellow', 'orange', 'silver'];
@@ -30,16 +28,12 @@ function playRandomGameTrack() {
   gameMusic.play();
 }
 
+
 // Random color generator for snake
 function getRandomColor() {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
 }
-
-// Play music when the start button is clicked
-document.getElementById('start-button').addEventListener('click', function () {
-  playRandomGameTrack();
-});
 
 // Define Constants
 const startButton = document.querySelector('#start-button');
@@ -58,7 +52,15 @@ const cols = 20;
 let score = 0;
 let finalScore = 0
 let cherryCount = 0;
-let highScores = [0,0,0,0,0];
+// let highScores = [0,0,0,0,0];
+let highScores = [
+  { initials: '', score: 0 },
+  { initials: '', score: 0 },
+  { initials: '', score: 0 },
+  { initials: '', score: 0 },
+  { initials: '', score: 0 },
+];
+let gameOver = false;
 
 homeButton.addEventListener('click', function () {
   const startMenu = document.getElementById('start-menu');
@@ -66,6 +68,7 @@ homeButton.addEventListener('click', function () {
   const gameScreen = document.getElementById('game-screen');
   gameScreen.style.display = 'none';
   endMovement();
+  gameMusic.pause();
 });
 
 // Function to iterate through grid container matrix,
@@ -90,7 +93,12 @@ startButton.addEventListener('click', function () {
   const gameScreen = document.getElementById('game-screen');
   gameScreen.style.display = 'flex';
   document.addEventListener('keydown', handleKeyDown);
-
+  if (gameScreen.style.backgroundImage === 'url("../images/purple-vibrant-fog.jpg")') {
+    gameScreen.style.backgroundImage = 'url("../images/blue-vibrant-fog.jpg")'
+  } else {
+    gameScreen.style.backgroundImage = 'url("../images/purple-vibrant-fog.jpg")'
+  }
+  playRandomGameTrack();
   resetGame();
 });
 
@@ -101,7 +109,12 @@ newGameButton.addEventListener('click', function() {
   const gameScreen = document.getElementById('game-screen');
   gameScreen.style.display = 'flex';
   document.addEventListener('keydown', handleKeyDown);
-
+  if (gameScreen.style.backgroundImage === 'url("../images/purple-vibrant-fog.jpg")') {
+    gameScreen.style.backgroundImage = 'url("../images/blue-vibrant-fog.jpg")'
+  } else {
+    gameScreen.style.backgroundImage = 'url("../images/purple-vibrant-fog.jpg")'
+  }
+  playRandomGameTrack();
   resetGame();
 });
 
@@ -121,15 +134,22 @@ function getRandomPosition() {
   return { row, col, index: row * cols + col };
 }
 
-function adjustLeaderboard() {
-  highScores.push(score);
-  highScores.sort((a, b) => b - a);
-  if (highScores.length > 5) {
-  highScores.splice(5, 1);
-  }
-  console.log(highScores);
-  topScoresEl.innerHTML = `1. ${highScores[0]}<br>2. ${highScores[1]}<br>3. ${highScores[2]}<br>4. ${highScores[3]}<br>5. ${highScores[4]}<br>`
+function adjustLeaderboard(newInitials, newScore) {
+  if (typeof newInitials === 'string' && typeof newScore === 'number') {
+    highScores.push({initials: newInitials, score: newScore});
+    highScores.sort((a, b) => b.score - a.score);
+    if (highScores.length > 5) {
+      highScores.splice(5, 1);
+    }
+    // Update leaderboard display
+    topScoresEl.innerHTML = highScores.map((entry, index) => {
+      return `${index + 1}. ${entry.initials} - ${entry.score}<br>`;
+    }).join('');
+  } 
 }
+
+
+
 // Function to determine the initial movement direction based on the quadrant
 function getInitialDirection(position) {
   const { row, col } = position;
@@ -160,6 +180,8 @@ function initializeSnake() {
 
   startMovement();
 }
+
+// Initialize cherry position
 function initializeCherry() {
   let startPosition;
   do {
@@ -224,6 +246,7 @@ function startMovement() {
 function endMovement() {
   if (movementInterval) clearInterval(movementInterval);
   document.removeEventListener('keydown', handleKeyDown);
+  
 }
 
 // Function to update the grid display to show the snake
@@ -306,17 +329,49 @@ function cherrySoundEffect() {
   soundEffects.cherry.play(); }
 
 
-function handleGameOver() { 
-    let finalScore = score;
-    for (let i = 0; i < highScores.length; i++) { 
-      if (finalScore > highScores[i]) { 
-        showGameOverMessage('Congratulations! High score! Enter initials here.'); 
-        return; 
-      } 
+  function handleGameOver() {
+  let finalScore = score;
+  gameOver = true;
+  let isHighScore = false;
+
+  for (let i = 0; i < highScores.length; i++) {
+    if (finalScore > highScores[i].score) {
+      isHighScore = true;
+      showGameOverMessage('Congratulations! High score! Enter initials here.', true);
+      return;
     }
-    showGameOverMessage(`Game Over! Your score is ${score}`);
-    endMovement(); 
   }
+
+  if (!isHighScore && highScores.length < 5) {
+    isHighScore = true;
+    showGameOverMessage('Congratulations! High score! Enter initials here.', true);
+    return;
+  }
+
+  showGameOverMessage(`Game Over! Your score is ${score}`, false);
+  endMovement();
+}
+
+function showGameOverMessage(message, isHighScore) {
+  const gameOverMessage = document.getElementById('game-over-message');
+  gameOverMessage.innerHTML = message;
+
+  if (isHighScore) {
+    gameOverMessage.innerHTML += `
+      <div>
+        <label for="initials-input">Enter your initials: </label>
+        <input type="text" id="initials-input" maxlength="3" oninput="validateInitialsInput(this)">
+        <button onclick="submitInitials(${score})">Submit</button>
+      </div>
+    `;
+  }
+
+  gameOverMessage.classList.remove('hidden');
+  gameOverMessage.classList.add('visible');
+}
+
+  
+  
 
 // Function to move the snake
 function moveSnake(direction) {
@@ -345,6 +400,7 @@ function moveSnake(direction) {
         clearInterval(movementInterval);
         showGameOverMessage(`Game Over! Your score is ${score}`);
         handleGameOver();
+        adjustLeaderboard();
         return;
       }
       break;
@@ -372,6 +428,7 @@ function moveSnake(direction) {
     clearInterval(movementInterval);
     showGameOverMessage(`Game Over! Your score is ${score}`);
     handleGameOver();
+    adjustLeaderboard();
     return;
   }
 
@@ -384,6 +441,7 @@ function moveSnake(direction) {
 
 // Function to reset the game when game over
 function resetGame() {
+  gameOver = false;
   score = 0;
   cherryCount = 0;
   snakePosition.length = 0;
@@ -397,6 +455,11 @@ function resetGame() {
 
 // Function to handle key down events for changing direction
 function handleKeyDown(event) {
+
+if (gameOver) {
+  return;
+}
+
   let newDirection;
   switch (event.key) {
     case 'ArrowUp':
@@ -436,7 +499,6 @@ function handleKeyDown(event) {
       }
       break;
     default:
-      console.log('Unhandled key: ' + event.key);
       return;
   }
 
@@ -446,17 +508,48 @@ function handleKeyDown(event) {
   }
 }
 
-
-function showGameOverMessage(message) {
-  const gameOverMessage = document.getElementById('game-over-message');
-  gameOverMessage.textContent = message;
-  gameOverMessage.classList.remove('hidden');
-  gameOverMessage.classList.add('visible');
-}
 function hideGameOverMessage(message) {
   const gameOverMessage = document.getElementById('game-over-message');
   gameOverMessage.textContent = message;
   gameOverMessage.classList.add('hidden');
   gameOverMessage.classList.remove('visible');
 }
+
+function showGameOverMessage(message, highScores) {
+  const gameOverMessage = document.getElementById('game-over-message');
+  gameOverMessage.innerHTML = message;
+
+  if (highScores) {
+    gameOverMessage.innerHTML += `
+      <div>
+        <label for="initials-input">Enter your initials: </label>
+        <input type="text" id="initials-input" maxlength="3" oninput="validateInitialsInput(this)">
+        <button onclick="submitInitials()">Submit</button>
+      </div>
+    `;
+  }
+
+  gameOverMessage.classList.remove('hidden');
+  gameOverMessage.classList.add('visible');
+}
+
+function validateInitialsInput(input) {
+  input.value = input.value.toUpperCase().slice(0, 3);
+}
+
+function submitInitials() {
+  const initials = document.getElementById('initials-input').value.toUpperCase();
+
+  if (initials.length <= 3) {
+    adjustLeaderboard(initials, score);
+    hideGameOverMessage();
+  } else {
+    alert('Please enter no more than 3 characters for your initials.');
+  }
+}
+
+
+
+
+
 

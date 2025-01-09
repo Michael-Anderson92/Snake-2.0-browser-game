@@ -58,7 +58,6 @@ body {
   border-radius: 5px;
   align-items: center;
   text-align: center;
-  text-decoration: underline;
 }
 
 #leaderboard-title, #top-scores {
@@ -70,6 +69,7 @@ body {
   padding-top: 1vh;
   width: 100%;
   font-size: 1.5em;
+  text-decoration: underline;
 }
 
 #top-scores {
@@ -81,9 +81,6 @@ body {
   line-height: 2em;
   font-size: 1.5em;
 }
-
-
-
 
 #start-hidden {
   display: flex;
