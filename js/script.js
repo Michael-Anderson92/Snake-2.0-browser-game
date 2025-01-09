@@ -337,18 +337,18 @@ function cherrySoundEffect() {
   for (let i = 0; i < highScores.length; i++) {
     if (finalScore > highScores[i].score) {
       isHighScore = true;
-      showGameOverMessage('High score! Enter initials here.', true);
+      showGameOverMessage('High score! Enter initials:', true);
       return;
     }
   }
 
   if (!isHighScore && highScores.length < 5) {
     isHighScore = true;
-    showGameOverMessage('Congratulations! High score! Enter initials here.', true);
+    showGameOverMessage('High score! Enter initials:', true);
     return;
   }
 
-  showGameOverMessage(`Game Over! Your score is ${score}`, false);
+  showGameOverMessage(`Game Over! Score: ${score}`, false)
   endMovement();
 }
 
@@ -388,7 +388,7 @@ function moveSnake(direction) {
       // Check for left wall collision
       if (snakePosition[0] % cols === 0) {
         clearInterval(movementInterval);
-        showGameOverMessage(`Game Over! Your score is ${score}`);
+        showGameOverMessage(`Game Over! Score: ${score}`);
         endMovement();
         return;
       }
@@ -398,7 +398,7 @@ function moveSnake(direction) {
       // Check for right wall collision
       if (snakePosition[0] % cols === cols - 1) {
         clearInterval(movementInterval);
-        showGameOverMessage(`Game Over! Your score is ${score}`);
+        showGameOverMessage(`Game Over! Score: ${score}`);
         handleGameOver();
         adjustLeaderboard();
         return;
@@ -426,7 +426,7 @@ function moveSnake(direction) {
   // Check for self-collision
   if (snakePosition.includes(newPosition)) {
     clearInterval(movementInterval);
-    showGameOverMessage(`Game Over! Your score is ${score}`);
+    showGameOverMessage(`Game Over! Score: ${score}`);
     handleGameOver();
     adjustLeaderboard();
     return;
