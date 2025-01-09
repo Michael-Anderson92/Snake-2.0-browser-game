@@ -337,7 +337,7 @@ function cherrySoundEffect() {
   for (let i = 0; i < highScores.length; i++) {
     if (finalScore > highScores[i].score) {
       isHighScore = true;
-      showGameOverMessage('Congratulations! High score! Enter initials here.', true);
+      showGameOverMessage('High score! Enter initials here.', true);
       return;
     }
   }
