@@ -63,7 +63,7 @@ Score points by collecting the single cherry that appears on the game board. Eac
   </tr>
   <tr>
     <td style="width:30%; vertical-align: top;">
-      <strong>Game Over:</strong>
+      <strong>High Score:</strong>
     </td>
     <td style="width:70%; vertical-align: top;">
       <img src="images/snake-high-score.png" alt="High score screenshot" style="width: 100%;">
@@ -71,7 +71,7 @@ Score points by collecting the single cherry that appears on the game board. Eac
   </tr>
    <tr>
     <td style="width:30%; vertical-align: top;">
-      <strong>Game Play:</strong>
+      <strong>Leaderboardy:</strong>
     </td>
     <td style="width:70%; vertical-align: top;">
       <img src="images/snake-leaderboard.png" alt="Leaderboard screenshot" style="width: 100%;">
